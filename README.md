@@ -115,7 +115,7 @@ if (-not (Test-Path database/database.sqlite)) { New-Item database/database.sqli
 Run the migrations to create the database tables:
 
 ```powershell
-php artisan migrate
+php artisan key:generate
 ```
 
 If Laravel asks for confirmation to use the database, confirm that you want to proceed in your local development environment.
