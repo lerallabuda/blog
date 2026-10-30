@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -12,10 +13,11 @@ class PostController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-         $posts = Post::paginate(16);
-        return view('posts.index', compact('posts'));
-    }
+{
+    $posts = Post::latest()->paginate(16);
+
+    return view('posts.index', compact('posts'));
+}
 
     /**
      * Show the form for creating a new resource.
