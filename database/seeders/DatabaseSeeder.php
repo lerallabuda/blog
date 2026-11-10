@@ -2,20 +2,22 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Post;
+use App\Models\Image;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class ImageSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        $this->call(UserSeeder::class);
-        $this->call(PostSeeder::class);
+        $posts = Post::all();
+
+        foreach ($posts as $post) {
+            if (!$post->image) {
+                Image::factory()->create([
+                    'post_id' => $post->id
+                ]);
+            }
+        }
     }
 }

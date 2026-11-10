@@ -20,14 +20,9 @@ class PostFactory extends Factory
             $updated = $created;
         }
 
-        $imageUrl = 'https://picsum.photos/seed/'
-            . fake()->uuid()
-            . '/1280/960';
-
         return [
             'title' => fake()->sentence(),
             'body' => fake()->paragraphs(6, true),
-            'image_path' => $imageUrl,
             'created_at' => $created,
             'updated_at' => $updated,
         ];

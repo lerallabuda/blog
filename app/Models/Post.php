@@ -11,10 +11,9 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-    'title',
-    'body',
-    'image_path',
-];
+        'title',
+        'body',
+    ];
 
     public function snippet(): Attribute
     {
@@ -33,5 +32,10 @@ class Post extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function image()
+    {
+        return $this->hasOne(Image::class);
     }
 }
