@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -20,14 +21,9 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'body' => 'required|string',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
-        ]);
+        $validated = $request->validated();
 
         $post = new Post([
             'title' => $validated['title'],
@@ -37,14 +33,12 @@ class PostController extends Controller
         $post->user()->associate(Auth::user());
         $post->save();
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('images', 'public');
+        foreach ($request->file('images') ?? [] as $image) {
+            $path = $image->store('images', 'public');
 
-                $post->images()->create([
-                    'path' => '/storage/' . $path,
-                ]);
-            }
+            $post->images()->create([
+                'path' => '/storage/' . $path,
+            ]);
         }
 
         return redirect()->route('posts.index');
@@ -60,14 +54,9 @@ class PostController extends Controller
         return view('posts.edit', compact('post'));
     }
 
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'body' => 'required|string',
-        ]);
-
-        $post->update($validated);
+        $post->update($request->validated());
 
         return redirect()->route('posts.index');
     }
