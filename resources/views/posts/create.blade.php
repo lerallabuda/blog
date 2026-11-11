@@ -4,16 +4,22 @@
 @section('content')
     <div class="container mx-auto">
 
-        <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data"
+        <form action="{{ route('posts.store') }}" method="POST"
+            enctype="multipart/form-data"
             class="card bg-base-300 shadow-sm w-2/3 mx-auto p-3">
 
             @csrf
 
             <fieldset class="fieldset">
                 <legend class="fieldset-legend">Title</legend>
-                <input name="title" value="{{ old('title') }}" type="text"
+
+                <input
+                    name="title"
+                    value="{{ old('title') }}"
+                    type="text"
                     class="input w-full @error('title') input-error @enderror"
-                    placeholder="Title" />
+                    placeholder="Title"
+                />
 
                 @error('title')
                     <p class="label text-error">{{ $message }}</p>
@@ -22,9 +28,12 @@
 
             <fieldset class="fieldset">
                 <legend class="fieldset-legend">Content</legend>
-                <textarea name="body"
+
+                <textarea
+                    name="body"
                     class="textarea h-36 w-full @error('body') textarea-error @enderror"
-                    placeholder="Some content here">{{ old('body') }}</textarea>
+                    placeholder="Some content here"
+                >{{ old('body') }}</textarea>
 
                 @error('body')
                     <p class="label text-error">{{ $message }}</p>
@@ -34,8 +43,13 @@
             <fieldset class="fieldset">
                 <legend class="fieldset-legend">Photos</legend>
 
-                <input type="file" name="images[]" multiple accept="image/*"
-                    class="file-input w-full" />
+                <input
+                    type="file"
+                    name="images[]"
+                    multiple
+                    accept="image/*"
+                    class="file-input w-full"
+                />
 
                 @error('images')
                     <p class="label text-error">{{ $message }}</p>
@@ -51,6 +65,7 @@
             </fieldset>
 
             <button class="btn btn-primary">Create</button>
+
         </form>
     </div>
 @endsection
