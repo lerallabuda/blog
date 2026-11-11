@@ -25,11 +25,27 @@ class PostController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        $post = new Post($validated);
+        $post = new Post([
+            'title' => $validated['title'],
+            'body' => $validated['body'],
+        ]);
+
         $post->user()->associate(Auth::user());
         $post->save();
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('images', 'public');
+
+                $post->images()->create([
+                    'path' => '/storage/' . $path,
+                ]);
+            }
+        }
 
         return redirect()->route('posts.index');
     }
