@@ -5,10 +5,11 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Illuminate\Support\Facades\Auth;
 use Spatie\Sluggable\Attributes\Sluggable;
 
 #[Fillable(['name', 'email', 'password'])]
@@ -46,5 +47,27 @@ class User extends Authenticatable
 
     public function comments() {
         return $this->hasMany(Comment::class);
+    }
+
+    public function followers() {
+        return $this->belongsToMany(User::class, 'follows', 'followee_id', 'follower_id');
+    }
+
+    public function followees() {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followee_id');
+    }
+
+    public function authHasFollowed(): Attribute {
+        return Attribute::get(function (){
+            if(!Auth::check()){
+                return false;
+            }
+            return $this->followers()->where('follower_id', Auth::user()->id)->exists();
+        });
+    }
+
+    public function feed() {
+        $followeeIds = $this->followees()->select('id')->get()->pluck('id');
+        return Post::whereIn('user_id', $followeeIds);
     }
 }

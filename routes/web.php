@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PublicController::class, 'index'])->name('home');
 
 Route::get('/buttons', [PublicController::class, 'buttons'])->name('buttons');
-
+Route::post('/user/{user}', [PublicController::class, 'follow'])->name('follow')->middleware('auth');
+Route::get('/feed', [PublicController::class, 'feed'])->name('feed')->middleware('auth');
 Route::get('/post/{post}', [PublicController::class, 'post'])->name('post');
 Route::get('/user/{user}', [PublicController::class, 'user'])->name('user');
 Route::resource('/admin/posts', PostController::class)
