@@ -70,4 +70,7 @@ class User extends Authenticatable
         $followeeIds = $this->followees()->select('id')->get()->pluck('id');
         return Post::whereIn('user_id', $followeeIds);
     }
+     public function likes() {
+        return $this->hasMany(Like::class);
+    }
 }

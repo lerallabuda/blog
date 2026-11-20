@@ -15,7 +15,7 @@ Route::get('/post/{post}', [PublicController::class, 'post'])->name('post');
 Route::get('/user/{user}', [PublicController::class, 'user'])->name('user');
 Route::resource('/admin/posts', PostController::class)
     ->middleware('auth');
-
+Route::post('/post/{post}', [PublicController::class, 'like'])->name('like')->middleware('auth');
 Route::get('/dashboard', [PublicController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
