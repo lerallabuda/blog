@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
-use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -13,7 +14,6 @@ class PublicController extends Controller
     public function index() {
         $posts = Post::with('images', 'user', 'tags')->withCount('comments', 'likes')->latest()->simplePaginate(16);
         return view('welcome', compact('posts'));
-
     }
 
     public function user(User $user) {
@@ -24,7 +24,9 @@ class PublicController extends Controller
     public function buttons() {
         return view('buttons');
     }
+
     public function post(Post $post) {
+        $post->load('images', 'user', 'tags', 'category', 'comments.user')->loadCount('comments', 'likes');
         return view('post', compact('post'));
     }
 
@@ -49,7 +51,6 @@ class PublicController extends Controller
         }
         return redirect()->back();
     }
-
     public function feed() {
         $posts = Auth::user()->feed()->with('images', 'user', 'tags')->withCount('comments', 'likes')->latest()->simplePaginate(16);
         return view('welcome', compact('posts'));

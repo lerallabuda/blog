@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    /** @use HasFactory<\Database\Factories\CommentFactory> */
     use HasFactory;
 
-     public function user() {
+    protected $fillable = ['body'];
+
+    public function user() {
         return $this->belongsTo(User::class);
     }
 
@@ -18,4 +19,3 @@ class Comment extends Model
         return $this->belongsTo(Post::class);
     }
 }
-

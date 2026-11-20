@@ -1,3 +1,4 @@
+
 @if ($paginator->hasPages())
     <nav
         role="navigation"
@@ -34,5 +35,4 @@
             @endif
         </div>
     </nav>
-@endif
 @endif
