@@ -11,7 +11,7 @@ Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/buttons', [PublicController::class, 'buttons'])->name('buttons');
 
 Route::get('/post/{post}', [PublicController::class, 'post'])->name('post');
-
+Route::get('/user/{user}', [PublicController::class, 'user'])->name('user');
 Route::resource('/admin/posts', PostController::class)
     ->middleware('auth');
 
