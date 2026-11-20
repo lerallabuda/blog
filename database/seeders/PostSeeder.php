@@ -1,4 +1,3 @@
-
 <?php
 
 namespace Database\Seeders;
@@ -18,7 +17,7 @@ class PostSeeder extends Seeder
         }
 
         Post::factory(1000)->make()->each(function ($post) use ($users) {
-            $post->user_id = $users->random()->id;
+            $post->user()->associate($users->random());
             $post->save();
         });
     }

@@ -1,61 +1,22 @@
-use App\Http\Requests\StoreTagRequest;
-use App\Http\Requests\UpdateTagRequest;
+<?php
 
-class TagController extends Controller
+namespace Database\Seeders;
+
+use App\Models\Post;
+use App\Models\Tag;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+
+class TagSeeder extends Seeder
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function run(): void
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTagRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTagRequest $request, Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Tag $tag)
-    {
-        //
+        $tags = Tag::factory(10)->create();
+        $posts = Post::select('id')->get();
+        foreach($posts as $post) {
+            $randomTags = $tags->random(rand(0,10));
+            $post->tags()->attach($randomTags);
+        }
     }
 }
