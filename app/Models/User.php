@@ -18,7 +18,8 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
-      public function getRouteKeyName(): string
+      
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
