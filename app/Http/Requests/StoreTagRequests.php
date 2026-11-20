@@ -1,66 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Requests;
 
-use App\Models\Tag;
-use App\Http\Requests\StoreTagRequest;
-use App\Http\Requests\UpdateTagRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
 
-class TagController extends Controller
+class StoreTagRequest extends FormRequest
 {
     /**
-     * Display a listing of the resource.
+     * Determine if the user is authorized to make this request.
      */
-    public function index()
+    public function authorize(): bool
     {
-        //
+        return true;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function create()
+    public function rules(): array
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTagRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTagRequest $request, Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Tag $tag)
-    {
-        //
+        return [
+            'name' => 'required|unique:tags,name',
+        ];
     }
 }
