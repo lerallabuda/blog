@@ -20,9 +20,17 @@
              <p>{!! $post->displayBody !!}</p>
          @endisset
          <span class="text-base-content/70">
-             <a href="{{ route('user', $post->user) }}" class="btn btn-link">
-                 {{ $post->user->name }}
-             </a>
+             @if($post->user)
+    <span class="text-base-content/70">
+        <a href="{{ route('user', ['user' => $post->user->id]) }}" class="btn btn-link">
+            {{ $post->user->name }}
+        </a>
+    </span>
+@else
+    <span class="text-base-content/70">
+        Unknown user
+    </span>
+@endif
          </span>
          <span class="text-base-content/70">{{ $post->created_at->diffForHumans() }}</span>
          <span class="text-base-content/70"><b>Comments:</b> {{ $post->comments_count }}</span>
