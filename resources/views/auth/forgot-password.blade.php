@@ -1,25 +1,49 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('partials.layout')
+
+@section('content')
+<div class="max-w-md mx-auto">
+    <h1 class="text-2xl font-bold mb-4">
+        @lang('Forgot Password')
+    </h1>
+
+    <p class="text-base-content/70 mb-4">
+        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+    </p>
+
+    @if (session('status'))
+        <div role="alert" class="alert alert-success mb-4">
+            {{ session('status') }}
+        </div>
+    @endif
 
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend">Email</legend>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
+            <input
+                id="email"
+                type="email"
+                name="email"
+                value="{{ old('email') }}"
+                class="input w-full @error('email') input-error @enderror"
+                required
+                autofocus
+                autocomplete="username"
+            >
+
+            @error('email')
+                <p class="label text-error">{{ $message }}</p>
+            @enderror
+        </fieldset>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary w-full">
                 {{ __('Email Password Reset Link') }}
-            </x-primary-button>
+            </button>
         </div>
     </form>
-</x-guest-layout>
+</div>
+@endsection
